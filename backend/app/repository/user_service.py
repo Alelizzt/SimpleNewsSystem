@@ -6,6 +6,22 @@ from app.hashing import Hash
 
 def create_user(user, db: Session):
     try:
+        # Validar campos obligatorios
+        if not user.username or not user.email or not user.password:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Username, email, and password are required fields"
+            )
+
+        # Validar si el correo ya está registrado
+        existing_user = db.query(models.User).filter(models.User.email == user.email).first()
+        if existing_user:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail="A user with this email already exists"
+            )
+
+        # Crear el usuario
         new_user = models.User(
             username=user.username,
             password=Hash.hash_password(user.password),
@@ -17,8 +33,8 @@ def create_user(user, db: Session):
         return new_user
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Error creating new user {e}"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"An unexpected error occurred: {e}"
         )
 
 

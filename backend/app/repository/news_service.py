@@ -26,13 +26,28 @@ def save_image(image: UploadFile) -> str:
 
     return str(image_path)
 
-def create_news(news, image:UploadFile, db:Session):
+def create_news(news, image: UploadFile, db: Session):
     try:
+        # Validar campos obligatorios
+        if not news.title or not news.content or not news.section:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Title, content, and section are required fields"
+            )
+
+        # Validar si ya existe una noticia con el mismo título
+        existing_news = db.query(models.News).filter(models.News.title == news.title).first()
+        if existing_news:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail="A news article with this title already exists"
+            )
+
+        # Guardar la imagen
         image_path = save_image(image)
 
-        # Convertir el valor del Enum a una cadena
+        # Crear la noticia
         section_value = news.section.value if isinstance(news.section, models.SectionEnum) else news.section
-
         new_news = models.News(
             title=news.title,
             content=news.content,
@@ -46,8 +61,8 @@ def create_news(news, image:UploadFile, db:Session):
         return new_news
     except Exception as e:
         raise HTTPException(
-            status_code=409,
-            detail=f"Error creating news: {e}"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"An unexpected error occurred: {e}"
         )
 
 

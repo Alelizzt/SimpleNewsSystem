@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, Form
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, Form, status
 from app.db.database import get_db
 from sqlalchemy.orm import Session
 from app.repository import news_service
@@ -8,7 +8,7 @@ from app.db.models import SectionEnum
 router = APIRouter(prefix="/news", tags=["News"])
 
 
-@router.post("/")
+@router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_news(
     title: str = Form(...),
     content: str = Form(...),
@@ -34,25 +34,25 @@ async def create_news(
     )
     return news_service.create_news(news_data, image, db)
 
-@router.get("/")
+@router.get("/", status_code=status.HTTP_200_OK)
 def get_all_news(db: Session = Depends(get_db)):
     current_news = news_service.get_all_news(db)
     return current_news
 
 
-@router.get("/{news_id}")
+@router.get("/{news_id}", status_code=status.HTTP_200_OK)
 def get_news(news_id: int, db:Session = Depends(get_db)):
     news_found = news_service.get_news(news_id, db)
     return news_found
 
 
-@router.delete("/{news_id}")
+@router.delete("/{news_id}", status_code=status.HTTP_200_OK)
 def delete_news(news_id: int, db: Session = Depends(get_db)):
     response = news_service.delete_news(news_id, db)
     return response
 
 
-@router.patch("/{news_id}")
+@router.patch("/{news_id}", status_code=status.HTTP_200_OK)
 def update_news(
     news_id: int,
     update_new: UpdateNews,
