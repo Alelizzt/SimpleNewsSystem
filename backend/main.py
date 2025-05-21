@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from app.routers import auth_routes, news_routes, user_routes
 from fastapi.staticfiles import StaticFiles
@@ -38,6 +39,7 @@ Simple News API te ayuda a gestionar y consultar noticias. 🌐
 
 API_VERSION_PREFIX = f"/v{settings.PROJECT_VERSION.split('.')[0]}"
 
+
 app = FastAPI(
     title="Simple web news API",
     description=description,
@@ -52,6 +54,15 @@ app = FastAPI(
         "name": "Apache 2.0",
         "url": "https://www.apache.org/licenses/LICENSE-2.0.html",
     },
+)
+
+# Configuración de CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # O especifica ["http://localhost:8000"] si quieres restringir
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(user_routes.router, prefix=API_VERSION_PREFIX)
