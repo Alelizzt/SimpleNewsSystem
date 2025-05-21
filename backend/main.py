@@ -2,6 +2,7 @@ from fastapi import FastAPI
 import uvicorn
 from app.routers import auth_routes, news_routes, user_routes
 from fastapi.staticfiles import StaticFiles
+from app.core.config import settings
 
 description = """
 Simple News API te ayuda a gestionar y consultar noticias. 🌐
@@ -35,11 +36,12 @@ Simple News API te ayuda a gestionar y consultar noticias. 🌐
 
 """
 
+API_VERSION_PREFIX = f"/v{settings.PROJECT_VERSION.split('.')[0]}"
 
 app = FastAPI(
     title="Simple web news API",
     description=description,
-    version="1.0.0",
+    version=settings.PROJECT_VERSION,
     terms_of_service="http://example.com/terms/",
     contact={
         "name": "Alejandro Lizzt",
@@ -52,13 +54,14 @@ app = FastAPI(
     },
 )
 
-app.include_router(user_routes.router)
-app.include_router(news_routes.router)
+app.include_router(user_routes.router, prefix=API_VERSION_PREFIX)
+app.include_router(news_routes.router, prefix=API_VERSION_PREFIX)
 
-app.include_router(auth_routes.router)
+app.include_router(auth_routes.router, prefix=API_VERSION_PREFIX)
 
-app.mount("/images", StaticFiles(directory="uploads/images"), name="images")
+app.mount(f"{API_VERSION_PREFIX}/images", StaticFiles(directory="uploads/images"), name="images")
 
 # Usar el atribudo reload=True solo en ambiente de desarrollo
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=8000, reload=True)
+    #uvicorn.run("main:app", port=8000, reload=True)
+    uvicorn.run("main:app", port=8000)

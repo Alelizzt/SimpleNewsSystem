@@ -7,7 +7,7 @@ load_dotenv(dotenv_path=env_path)
 
 class Settings:
     PROJECT_NAME:str = "PROYECTO-FAST-API"
-    PROJECT_VERSION:str = "1.0"
+    PROJECT_VERSION:str = os.getenv('API_VERSION')
     POSTGRES_DB:str = os.getenv('POSTGRES_DB')
     POSTGRES_USER:str = os.getenv('POSTGRES_USER')
     POSTGRES_PASSWORD:str = os.getenv('POSTGRES_PASSWORD')
