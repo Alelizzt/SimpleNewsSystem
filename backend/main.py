@@ -4,6 +4,7 @@ import uvicorn
 from app.routers import auth_routes, news_routes, user_routes
 from fastapi.staticfiles import StaticFiles
 from app.core.config import settings
+from fastapi.responses import HTMLResponse
 
 description = """
 Simple News API te ayuda a gestionar y consultar noticias. 🌐
@@ -71,6 +72,21 @@ app.include_router(news_routes.router, prefix=API_VERSION_PREFIX)
 app.include_router(auth_routes.router, prefix=API_VERSION_PREFIX)
 
 app.mount(f"{API_VERSION_PREFIX}/images", StaticFiles(directory="uploads/images"), name="images")
+
+@app.get("/", response_class=HTMLResponse)
+def root():
+    return f"""
+    <h1>Bienvenido a Simple News System API</h1>
+    <p>Consulta la <a href='/docs'>documentación interactiva</a> para probar los endpoints.</p>
+    <ul>
+        <li><b>Autenticación:</b> <code>POST {API_VERSION_PREFIX}/login/</code> (envía <code>username</code> y <code>password</code> para obtener un token JWT)</li>
+        <li><b>Usuarios:</b> <code>{API_VERSION_PREFIX}/users/</code> (registro, consulta, actualización y eliminación de usuarios)</li>
+        <li><b>Noticias:</b> <code>{API_VERSION_PREFIX}/news/</code> (CRUD de noticias, requiere autenticación para crear, actualizar y eliminar)</li>
+    </ul>
+    <p>Para endpoints protegidos, usa el header: <code>Authorization: Bearer &lt;token&gt;</code></p>
+    <p>Sube imágenes usando <code>POST {API_VERSION_PREFIX}/news/</code> con un archivo.</p>
+    <p>Más detalles en <a href='/docs'>/docs</a> o <a href='/redoc'>/redoc</a>.</p>
+    """
 
 # Usar el atribudo reload=True solo en ambiente de desarrollo
 if __name__ == "__main__":
