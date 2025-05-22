@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, Form, status
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile, Form, status
 from app.db.database import get_db
 from sqlalchemy.orm import Session
 from app.repository import news_service
@@ -39,9 +39,12 @@ async def create_news(
 
 
 @router.get("/", status_code=status.HTTP_200_OK)
-def get_all_news(db: Session = Depends(get_db)):
-    current_news = news_service.get_all_news(db)
-    return current_news
+def get_news_list(
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, ge=1, le=100),
+    db: Session = Depends(get_db)
+):
+    return news_service.get_all_news(db, page=page, limit=limit)
 
 
 @router.get("/{news_id}", status_code=status.HTTP_200_OK)

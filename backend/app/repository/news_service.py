@@ -86,14 +86,26 @@ def delete_news(news_id, db:Session):
     db.commit()
     return {"response": "News deleted successfully!"}
 
-def get_all_news(db:Session):
-    data = db.query(models.News).all()
+def get_all_news(db: Session, page: int = 1, limit: int = 10):
+    if page < 1:
+        page = 1
+    if limit < 1:
+        limit = 10
+
+    total = db.query(models.News).count()
+    skip = (page - 1) * limit
+    data = db.query(models.News).offset(skip).limit(limit).all()
+
     if not data:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="No news found"
+            status_code=status.HTTP_404_NOT_FOUND, detail="No news found"
         )
-    return data
+    return {
+        "news": data,
+        "page": page,
+        "limit": limit,
+        "total": total,
+    }
 
 def update_news(news_id, update_news, db:Session):
     news = db.query(models.News).filter(models.News.id == news_id)
