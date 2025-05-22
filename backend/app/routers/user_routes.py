@@ -16,7 +16,7 @@ def get_all_users(db: Session = Depends(get_db), current_user: User = Depends(ge
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-def create_new_user(new_user: UserCreate, db: Session = Depends(get_db),  current_user: User = Depends(get_current_user)):
+def create_new_user(new_user: UserCreate, db: Session = Depends(get_db)):
     user_service.create_user(new_user, db)
     return {"response": "User created successfully!"}
 
