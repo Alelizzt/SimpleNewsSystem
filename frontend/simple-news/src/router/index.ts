@@ -5,7 +5,7 @@ import AboutView from "../views/AboutView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import LoginView from "../views/LoginView.vue";
 import DashboardView from "../views/DashboardView.vue";
-import { useAuthStore } from "../stores/auth";
+import { useAuthStore } from "../stores/authStore";
 
 const routes = [
   {

@@ -1,5 +1,5 @@
 import router from "../router";
-import { useAuthStore } from "../stores/auth";
+import { useAuthStore } from "../stores/authStore";
 
 
 
