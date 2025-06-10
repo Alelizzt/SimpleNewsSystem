@@ -20,5 +20,5 @@ def auth_user(user, db: Session):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password !"
         )
-    access_token = create_access_token(data={"sub": user.username})
+    access_token = create_access_token(data={"sub": user.username, "id": user_auth.id})
     return {"access_token": access_token, "token_type": "bearer"}
