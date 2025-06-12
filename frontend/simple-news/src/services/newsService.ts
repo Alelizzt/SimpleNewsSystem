@@ -1,6 +1,6 @@
 import { useAuthStore } from '../stores/authStore';
+import { API_URL } from '../models/newsModel';
 
-const API_URL = 'http://127.0.0.1:8000/v1/news/';
 
 export async function createNews(tittle: string, content: string, section: string, author: number, imageFile: File): Promise<any> {
   const auth = useAuthStore();
@@ -14,7 +14,7 @@ export async function createNews(tittle: string, content: string, section: strin
   formData.append('image', imageFile);
 
   try {
-    const response = await fetch(API_URL, {
+    const response = await fetch(`${API_URL}news/`, {
       method: 'POST',
       headers: auth.token ? { Authorization: `Bearer ${auth.token}` } : undefined,
       body: formData,
@@ -38,7 +38,7 @@ export async function createNews(tittle: string, content: string, section: strin
 }
 
 export async function fetchNews(page = 1, limit = 10) {
-  const response = await fetch(`http://127.0.0.1:8000/v1/news/?page=${page}&limit=${limit}`, {
+  const response = await fetch(`${API_URL}news/?page=${page}&limit=${limit}`, {
     headers: { accept: 'application/json' }
   });
   if (!response.ok) {

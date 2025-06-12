@@ -1,9 +1,6 @@
 import router from "../router";
 import { useAuthStore } from "../stores/authStore";
-
-
-
-const API_URL = 'http://127.0.0.1:8000/v1/login/';
+import { API_URL } from "../models/newsModel";
 
 
 export async function login(username: string, password: string): Promise<any> {
@@ -15,7 +12,7 @@ export async function login(username: string, password: string): Promise<any> {
             password
         }).toString();
 
-        const response = await fetch(API_URL, {
+        const response = await fetch(`${API_URL}login/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
