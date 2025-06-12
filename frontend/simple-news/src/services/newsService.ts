@@ -36,3 +36,13 @@ export async function createNews(tittle: string, content: string, section: strin
     throw error;
   }
 }
+
+export async function fetchNews(page = 1, limit = 10) {
+  const response = await fetch(`http://127.0.0.1:8000/v1/news/?page=${page}&limit=${limit}`, {
+    headers: { accept: 'application/json' }
+  });
+  if (!response.ok) {
+    throw new Error('Error al cargar noticias');
+  }
+  return await response.json();
+}
