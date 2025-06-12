@@ -71,7 +71,8 @@ app.include_router(news_routes.router, prefix=API_VERSION_PREFIX)
 
 app.include_router(auth_routes.router, prefix=API_VERSION_PREFIX)
 
-app.mount(f"{API_VERSION_PREFIX}/images", StaticFiles(directory="uploads/images"), name="images")
+# Monta la carpeta de imágenes
+app.mount(f"{API_VERSION_PREFIX}/uploads/images", StaticFiles(directory="uploads/images"), name="images")
 
 @app.get("/", response_class=HTMLResponse)
 def root():
