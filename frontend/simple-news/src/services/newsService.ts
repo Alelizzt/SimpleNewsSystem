@@ -1,5 +1,6 @@
 import { useAuthStore } from '../stores/authStore';
 import { API_URL } from '../models/newsModel';
+import { type News } from '../models/newsModel';
 
 
 export async function createNews(tittle: string, content: string, section: string, author: number, imageFile: File): Promise<any> {
@@ -45,4 +46,24 @@ export async function fetchNews(page = 1, limit = 10) {
     throw new Error('Error al cargar noticias');
   }
   return await response.json();
+}
+
+export async function fetchNewsById(id: number) {
+  const response = await fetch(`${API_URL}news/${id}`)
+  if (!response.ok) throw new Error('No se pudo cargar la noticia')
+  return await response.json()
+}
+
+export async function updateNews(news: Partial<News>) {
+  const auth = useAuthStore()
+  const response = await fetch(`${API_URL}news/${news.id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${auth.token}`,
+    },
+    body: JSON.stringify(news),
+  })
+  if (!response.ok) throw new Error('No se pudo actualizar la noticia')
+  return await response.json()
 }
