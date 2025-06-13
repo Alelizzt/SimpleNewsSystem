@@ -35,6 +35,11 @@ const routes = [
     meta: {
       requiresAuth: true, // This route requires authentication
     },
+  },
+  {
+    path: '/news/:id',
+    name: 'NewsDetail',
+    component: () => import('../views/NewsDetailView.vue')
   }
 ];
 

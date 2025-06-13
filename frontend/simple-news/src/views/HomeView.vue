@@ -4,7 +4,12 @@
     <ul>
       <li v-for="news in newsList" :key="news.id">
         <strong>{{ news.title }}</strong>
-        <p>{{ news.content }}</p>
+        <p>
+          {{ news.content.length > 200 ? news.content.slice(0, 200) + '...' : news.content }}
+          <template v-if="news.content.length > 200">
+            <router-link :to="`/news/${news.id}`">Ver más</router-link>
+          </template>
+        </p>
       </li>
     </ul>
     <div v-if="loading">Cargando...</div>

@@ -6,5 +6,5 @@ export interface News {
   content: string
   section?: string
   author?: number | string
-  image_url?: string
+  image?: string
 }

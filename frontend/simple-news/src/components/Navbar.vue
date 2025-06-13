@@ -3,8 +3,8 @@
     <ul>
       <li><RouterLink to="/">Home</RouterLink></li>
       <li v-if="isLoggedIn"><RouterLink to="/dashboard">Dashboard</RouterLink></li>
-      <li v-else><RouterLink to="/login">Login</RouterLink></li>
-      <li v-else><RouterLink to="/register">Register</RouterLink></li>
+      <li v-if="!isLoggedIn"><RouterLink to="/login">Login</RouterLink></li>
+      <li v-if="!isLoggedIn"><RouterLink to="/register">Register</RouterLink></li>
     </ul>
   </nav>
 </template>
