@@ -4,6 +4,8 @@
     <ul>
       <li v-for="news in newsList" :key="news.id">
         <strong>{{ news.title }}</strong>
+        
+        <button @click="handleDelete(news.id)">❌ Eliminar</button>
         <p>
           {{ news.content.length > 200 ? news.content.slice(0, 200) + '...' : news.content }}
           <template v-if="news.content.length > 200">
@@ -26,7 +28,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import { fetchNews } from '../services/newsService'
+import { fetchNews, deleteNews } from '../services/newsService'
 import type { News } from '../models/newsModel'
 
 const newsList = ref<News[]>([])
@@ -55,6 +57,17 @@ function changePage(newPage: number) {
   }
 }
 
+async function handleDelete(id: number) {
+  if (confirm('¿Seguro que quieres eliminar esta noticia?')) {
+    try {
+      await deleteNews(id)
+      // Recarga la lista después de eliminar
+      newsList.value = newsList.value.filter(news => news.id !== id)
+    } catch (error: any) {
+      alert(error.message)
+    }
+  }
+}
 onMounted(loadNews)
 watch(page, loadNews)
 </script>

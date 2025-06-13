@@ -67,3 +67,33 @@ export async function updateNews(news: Partial<News>) {
   if (!response.ok) throw new Error('No se pudo actualizar la noticia')
   return await response.json()
 }
+
+
+export async function getNotice(newsId: number): Promise<any> {
+    try {
+        const response = await fetch(`${API_URL}news/${newsId}`, {
+            method: 'GET'
+        });
+        const data = await response.json();
+        console.log('Fetched news data:', data);
+        return data.username;
+    } catch (error) {
+        console.error('Error fetching author name:', error);
+        return undefined;
+    }
+}
+
+
+export async function deleteNews(id: number): Promise<void> {
+  const auth = useAuthStore()
+  const response = await fetch(`${API_URL}news/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${auth.token}`,
+    },
+  })
+  if (!response.ok) {
+    throw new Error('No se pudo eliminar la noticia')
+  }
+}

@@ -5,6 +5,7 @@ export interface News {
   title: string
   content: string
   section?: string
-  author?: number | string
+  author_id?: number | string
   image?: string
+  date_published?: string
 }
