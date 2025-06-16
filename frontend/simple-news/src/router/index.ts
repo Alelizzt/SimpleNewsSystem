@@ -33,14 +33,20 @@ const routes = [
     name: "Dashboard",
     component: DashboardView,
     meta: {
-      requiresAuth: true, // This route requires authentication
+      requiresAuth: true,
     },
   },
   {
-    path: '/news/:id',
-    name: 'NewsDetail',
-    component: () => import('../views/NewsDetailView.vue')
-  }
+    path: "/dashboard/:id?",
+    name: "Dashboard",
+    component: DashboardView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/news/:id",
+    name: "NewsDetail",
+    component: () => import("../views/NewsDetailView.vue"),
+  },
 ];
 
 const router = createRouter({
@@ -49,13 +55,13 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const auth = useAuthStore()
+  const auth = useAuthStore();
   if (to.meta.requiresAuth && !auth.token) {
-    next({ name: 'Login' }) // Si la ruta requiere autenticación y no hay token, redirige a login
+    next({ name: "Login" }); // Si la ruta requiere autenticación y no hay token, redirige a login
   } else {
     // Si no requiere autenticación o hay token, permite el acceso
-    next()
+    next();
   }
-})
+});
 
 export default router;

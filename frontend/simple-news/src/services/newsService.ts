@@ -10,7 +10,6 @@ export async function createNews(tittle: string, content: string, section: strin
   formData.append('title', tittle)
   formData.append('content', content)
   formData.append('section', section)
-  console.log(author, typeof author);
   formData.append('author', String(author))
   formData.append('image', imageFile);
 
