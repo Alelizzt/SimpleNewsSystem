@@ -16,7 +16,7 @@
             <option value="culture">Cultura</option>
         </select>
         <label for="image">Imagen:</label>
-        <input type="file" id="image" name="image" @change="onFileChange" accept="image/png, image/jpeg" :required="!props.newsToEdit" />
+        <input type="file" id="image" name="image" @change="onFileChange" accept="image/png, image/jpeg" :required="!newsToEdit" />
         <button type="submit">Enviar</button>
     </form>
 </template>
@@ -24,8 +24,9 @@
 import { ref, computed, watch, defineProps } from 'vue'
 import { useAuthStore } from '../stores/authStore'
 import { jwtDecode } from 'jwt-decode'
-import { createNews } from '../services/newsService'
+import { createNews, updateNews } from '../services/newsService'
 import type { News } from '../models/newsModel'
+import router from '../router'
 
 const auth = useAuthStore()
 
@@ -35,7 +36,7 @@ const news = ref<Partial<News>>({
   title: '',
   content: '',
   section: '',
-  image: '',
+  image: undefined,
 })
 
 const imageFile = ref<File | null>(null)
@@ -69,16 +70,35 @@ function onFileChange(e: Event) {
 }
 
 async function handleNewsSubmit() {
-  if (!imageFile.value) {
+  const formData = new FormData()
+  formData.append('title', news.value.title || '')
+  formData.append('content', news.value.content || '')
+  formData.append('section', news.value.section || '')
+  if (imageFile.value) {
+    formData.append('image', imageFile.value)
+  }
+
+  if (!imageFile.value && !props.newsToEdit) {
     alert('Por favor, selecciona una imagen.')
     return
   }
 
   try {
-
-    const data = await createNews(news.value.title || '', news.value.content || '', news.value.section || '', idAuthor.value, imageFile.value)
-    alert('Noticia enviada exitosamente')
-
+    let noticia
+    if (props.newsToEdit) {
+      noticia = await updateNews(props.newsToEdit.id, formData)
+      router.push('/news/' + props.newsToEdit.id)
+    } else {
+      noticia = await createNews(
+        news.value.title || '',
+        news.value.content || '',
+        news.value.section || '',
+        idAuthor.value!,
+        imageFile.value!
+      )
+      console.log('Noticia creada:', noticia)
+      /*TODO: modal para redirigir a la noticia creada o continuar en el dashboard*/
+    }
   } catch (error) {
     console.error('Error al enviar la noticia:', error)
     alert('Error al enviar la noticia')

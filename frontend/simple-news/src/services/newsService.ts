@@ -11,7 +11,9 @@ export async function createNews(tittle: string, content: string, section: strin
   formData.append('content', content)
   formData.append('section', section)
   formData.append('author', String(author))
-  formData.append('image', imageFile);
+  if (imageFile) {
+    formData.append('image', imageFile);
+  }
 
   try {
     const response = await fetch(`${API_URL}news/`, {
@@ -53,18 +55,22 @@ export async function fetchNewsById(id: number) {
   return await response.json()
 }
 
-export async function updateNews(news: Partial<News>) {
+export async function updateNews(id: number, formData: FormData) {
   const auth = useAuthStore()
-  const response = await fetch(`${API_URL}news/${news.id}`, {
+  const response = await fetch(`${API_URL}news/${id}`, {
     method: 'PATCH',
     headers: {
-      'Content-Type': 'application/json',
       Authorization: `Bearer ${auth.token}`,
     },
-    body: JSON.stringify(news),
+    body: formData,
   })
-  if (!response.ok) throw new Error('No se pudo actualizar la noticia')
-  return await response.json()
+  const data = await response.json()
+  if (!response.ok) {
+    throw new Error(data.detail?.[0]?.msg || data.detail || 'Failed to update news')
+  } else {
+    alert('Noticia actualizada correctamente')
+  }
+  return data
 }
 
 
