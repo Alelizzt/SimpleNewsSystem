@@ -1,6 +1,7 @@
 from datetime import datetime
 from enum import Enum
 from pydantic import BaseModel
+from typing import Optional
 
 
 class Section(str, Enum):  # Define un Enum explícito
@@ -31,8 +32,7 @@ class CreateNews(BaseModel):
 
 
 class UpdateNews(BaseModel):
-    title: str = None
-    image: str = None
-    content: str = None
-    section: Section = None
-    author: int = None
+    title: Optional[str] = None
+    content: Optional[str] = None
+    section: Optional[Section] = None
+    image: Optional[str] = None

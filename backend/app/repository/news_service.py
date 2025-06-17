@@ -1,3 +1,4 @@
+from typing import Optional
 import uuid
 import shutil
 from pathlib import Path
@@ -107,13 +108,31 @@ def get_all_news(db: Session, page: int = 1, limit: int = 10):
         "total": total,
     }
 
-def update_news(news_id, update_news, db:Session):
-    news = db.query(models.News).filter(models.News.id == news_id)
-    if not news.first():
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"There is no news with the id {news_id}"
-        )
-    news.update(update_news.dict(exclude_unset=True))
+async def update_news(
+    news_id: int,
+    db: Session,
+    title: Optional[str] = None,
+    content: Optional[str] = None,
+    section: Optional[str] = None,
+    image: Optional[UploadFile] = None,
+):
+    news = db.query(models.News).filter(models.News.id == news_id).first()
+    if not news:
+        raise HTTPException(status_code=404, detail="News not found")
+
+    if title is not None:
+        news.title = title
+    if content is not None:
+        news.content = content
+    if section is not None:
+        news.section = section
+    if image is not None:
+        # Guarda la imagen en disco y actualiza el campo en la base de datos
+        image_path = f"images/{image.filename}"
+        with open(f"uploads/{image_path}", "wb") as buffer:
+            buffer.write(await image.read())
+        news.image = image_path
+
     db.commit()
+    db.refresh(news)
     return {"response": "News updated successfully!"}

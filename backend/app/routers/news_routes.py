@@ -64,11 +64,20 @@ def delete_news(
 
 
 @router.patch("/{news_id}", status_code=status.HTTP_200_OK)
-def update_news(
+async def update_news(
     news_id: int,
-    update_new: UpdateNews,
+    title: str = Form(None),
+    content: str = Form(None),
+    section: str = Form(None),
+    image: UploadFile = File(None),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    response = news_service.update_news(news_id, update_new, db)
-    return response
+    return await news_service.update_news(
+        news_id=news_id,
+        db=db,
+        title=title,
+        content=content,
+        section=section,
+        image=image
+    )
