@@ -76,6 +76,6 @@ def update_user(user_id, updateUser, db: Session):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"There is no user with the id {user_id}",
         )
-    usuario.update(updateUser.dict(exclude_unset=True))
+    usuario.update(updateUser.model_dump(exclude_unset=True))
     db.commit()
     return {"response": "User updated successfully!"}
