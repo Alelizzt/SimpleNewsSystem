@@ -1,4 +1,3 @@
-from pydoc import cli
 from fastapi.testclient import TestClient
 import sys
 import os
