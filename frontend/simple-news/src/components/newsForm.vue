@@ -106,4 +106,99 @@ async function handleNewsSubmit() {
 }
 
 </script>
-<style></style>
+<style scoped>
+#news-form {
+  max-width: 900px;
+  margin: 2.5rem auto;
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+
+#news-form h3 {
+  font-family: 'PT Serif', Georgia, 'Times New Roman', Times, serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #121212;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+#news-form label {
+  font-family: 'PT Serif', Georgia, 'Times New Roman', Times, serif;
+  font-size: 1.08rem;
+  color: #222;
+  margin-bottom: 0.2rem;
+  letter-spacing: 0.5px;
+}
+
+#news-form input[type="text"],
+#news-form select {
+  font-family: 'PT Serif', Georgia, 'Times New Roman', Times, serif;
+  font-size: 1.08rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid #d3d3d3;
+  border-radius: 4px;
+  background: #fafafa;
+  color: #222;
+  transition: border 0.2s;
+  width: 96%;
+}
+
+#news-form textarea {
+  width: 96%;
+  font-family: 'PT Serif', Georgia, 'Times New Roman', Times, serif;
+  font-size: 1.15rem;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #d3d3d3;
+  border-radius: 4px;
+  background: #fafafa;
+  color: #222;
+  margin-bottom: 1.2rem;
+  transition: border 0.2s;
+  resize: vertical;
+  min-height: 220px;
+  max-height: 600px;
+  line-height: 1.7;
+}
+
+#news-form input[type="file"] {
+  font-size: 1rem;
+  margin-top: 0.3rem;
+}
+
+#news-form button[type="submit"] {
+  margin-top: 0.5rem;
+  padding: 0.7rem 0;
+  font-family: 'PT Serif', Georgia, 'Times New Roman', Times, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  background: #e63946;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#news-form button[type="submit"]:hover {
+  background: #a4161a;
+}
+
+@media (max-width: 1000px) {
+  #news-form {
+    max-width: 98vw;
+    padding: 1.2rem 0.7rem;
+  }
+  #news-form h3 {
+    font-size: 1.2rem;
+  }
+}
+</style>
