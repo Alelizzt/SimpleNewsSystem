@@ -47,6 +47,28 @@ export async function logout() {
     }
 }
 
+export async function register(email:string, password: string, username: string): Promise<any> {
+    try {
+        const body = {
+            "email": email,
+            "password": password,
+            "username": username
+        }
+
+        const response = await fetch(`${API_URL}users/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        });
+        return response.json();
+    } catch (error) {
+        console.error('Error during registration:', error);
+        throw error;
+    }
+}
+
 export function getCurrentUser(): string | null {
     const auth = useAuthStore();
 
