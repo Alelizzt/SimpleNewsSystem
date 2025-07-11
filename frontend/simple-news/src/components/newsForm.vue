@@ -97,7 +97,13 @@ async function handleNewsSubmit() {
         imageFile.value!
       )
       console.log('Noticia creada:', noticia)
-      /*TODO: modal para redirigir a la noticia creada o continuar en el dashboard*/
+
+      // Limpia el formulario
+      news.value = { title: '', content: '', section: '', image: undefined }
+      imageFile.value = null
+      const fileInput = document.getElementById('image') as HTMLInputElement
+      if (fileInput) fileInput.value = ''
+
     }
   } catch (error) {
     console.error('Error al enviar la noticia:', error)
