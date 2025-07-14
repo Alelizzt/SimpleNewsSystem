@@ -145,9 +145,51 @@ nav a.router-link-exact-active {
   main {
     max-width: 98vw;
     padding: 1rem;
+    min-height: 50vh;
   }
   #header h1 {
     font-size: 2rem;
+  }
+  .navbar-container {
+    max-width: 98vw;
+    padding: 0 0.5rem;
+  }
+  nav {
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 1rem;
+    padding-bottom: 0.3rem;
+  }
+  footer {
+    font-size: 0.9rem;
+    padding: 0.8rem 0 0.8rem 0;
+  }
+}
+
+@media (max-width: 600px) {
+  main {
+    padding: 0.5rem;
+    font-size: 0.98rem;
+  }
+  #header {
+    padding: 1rem 0 0.5rem 0;
+  }
+  #header h1 {
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+  }
+  .navbar-container {
+    padding: 0 0.2rem;
+  }
+  nav {
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    flex-direction: column;
+    align-items: center;
+  }
+  footer {
+    font-size: 0.85rem;
+    padding: 0.5rem 0 0.5rem 0;
   }
 }
 </style>
