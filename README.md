@@ -40,7 +40,7 @@ docker-compose up -d db
 Luego, sigue las instrucciones específicas para cada capa:
 
 - [Backend](./backend/README.md)
-- [Frontend](./frontend/README.md)
+- [Frontend](./frontend/simple-news/README.md)
 
 ---
 
