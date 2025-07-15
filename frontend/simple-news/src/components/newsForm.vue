@@ -88,6 +88,7 @@ async function handleNewsSubmit() {
     if (props.newsToEdit) {
       noticia = await updateNews(props.newsToEdit.id, formData)
       router.push('/news/' + props.newsToEdit.id)
+      alert('Noticia actualizada correctamente')
     } else {
       noticia = await createNews(
         news.value.title || '',
@@ -96,6 +97,7 @@ async function handleNewsSubmit() {
         idAuthor.value!,
         imageFile.value!
       )
+      alert('Noticia creada correctamente')
       console.log('Noticia creada:', noticia)
 
       // Limpia el formulario

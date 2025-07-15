@@ -1,5 +1,73 @@
-# Vue 3 + TypeScript + Vite
+# Simple News System - Frontend
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Cliente web para el API de Simple News System. Permite visualizar, crear y gestionar noticias de manera sencilla.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## 🚀 Requisitos
+
+- Node.js 18+
+- pnpm, npm o yarn
+
+## ⚙️ Instalación
+
+1. **Clona el repositorio:**
+   ```bash
+   git clone https://github.com/tu_usuario/SimpleNewsSystem.git
+   cd SimpleNewsSystem/frontend/simple-news
+   ```
+
+2. **Instala las dependencias:**
+   ```bash
+   pnpm install
+   # o
+   npm install
+   # o
+   yarn install
+   ```
+
+## ▶️ Ejecución en desarrollo
+
+```bash
+pnpm run dev
+# o
+npm run dev
+# o
+yarn dev
+```
+La aplicación estará disponible en [http://localhost:3000](http://localhost:3000).
+
+## 📝 Configuración
+
+- Puedes configurar la URL del backend en el archivo `.env`:
+  ```
+  VITE_API_URL=http://localhost:8000
+  ```
+
+## 🛠️ Scripts principales
+
+- `dev`: Ejecuta el servidor de desarrollo.
+- `build`: Compila la aplicación para producción.
+- `preview`: Previsualiza la aplicación compilada.
+
+## 📦 Estructura del proyecto
+
+```
+simple-news/
+│
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── services/
+│   └── App.jsx
+├── public/
+├── .env
+├── package.json
+└── README.md
+```
+
+## 📄 Licencia
+
+Este proyecto está bajo la licencia Apache 2.0.
+
+---
+
+**Desarrollado por Alejandro
