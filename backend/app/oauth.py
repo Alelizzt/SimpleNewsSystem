@@ -1,6 +1,6 @@
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from app.token import verify_token
+from app.auth_token import verify_token
 from app.core.config import settings
 
 API_VERSION_PREFIX = f"/v{settings.PROJECT_VERSION.split('.')[0]}"

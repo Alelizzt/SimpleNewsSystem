@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from app.db import models
 from fastapi import HTTPException, status
 from app.hashing import Hash
-from app.token import create_access_token
+from app.auth_token import create_access_token
 
 
 def auth_user(user, db: Session):
