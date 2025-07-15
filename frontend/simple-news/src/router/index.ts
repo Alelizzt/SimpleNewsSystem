@@ -54,7 +54,7 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _ , next) => {
   const auth = useAuthStore();
   if (to.meta.requiresAuth && !auth.token) {
     next({ name: "Login" }); // Si la ruta requiere autenticación y no hay token, redirige a login

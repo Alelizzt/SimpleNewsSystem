@@ -1,6 +1,5 @@
 import { useAuthStore } from '../stores/authStore';
 import { API_URL } from '../models/newsModel';
-import { type News } from '../models/newsModel';
 
 
 export async function createNews(tittle: string, content: string, section: string, author: number, imageFile: File): Promise<any> {
