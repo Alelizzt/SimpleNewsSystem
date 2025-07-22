@@ -1,6 +1,9 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {
+    "target": "esnext",             // necesario para soportar nuevas características JS
+    "module": "esnext",             // necesario para que import.meta funcione
+    "moduleResolution": "node",     // común en proyectos con Vite
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 
     /* Linting */

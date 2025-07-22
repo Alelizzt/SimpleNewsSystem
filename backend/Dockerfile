@@ -14,6 +14,9 @@ ENV UV_COMPILE_BYTECODE=1
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#caching
 ENV UV_LINK_MODE=copy
 
+# Instalar curl para healthcheck
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
 # Install dependencies
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#intermediate-layers
 RUN --mount=type=cache,target=/root/.cache/uv \
@@ -36,6 +39,6 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync
 
 EXPOSE 8000
-COPY start.sh /app/start.sh
+COPY ./start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 CMD ["/app/start.sh"]

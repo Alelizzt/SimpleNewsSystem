@@ -19,24 +19,46 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?Variable not set}
       - POSTGRES_USER=${POSTGRES_USER?Variable not set}
       - POSTGRES_DB=${POSTGRES_DB?Variable not set}
+    networks:
+      - app-network
 
   backend:
     build:
-      dockerfile: ./backend/Dockerfile
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: backend
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/ || exit 1"]
+      interval: 10s
+      retries: 3
+      start_period: 30s
+      timeout: 10s
     ports:
       - "8000:8000"
+    env_file:
+      - ./backend/.env.docker
     networks:
       - app-network
     depends_on:
       db:
         condition: service_healthy
         restart: true
+    volumes:
+      - ./backend/upload/images:/app/upload/images
 
   frontend:
     build:
-      dockerfile: ./frontend/simple-news/Dockerfile
+      context: ./frontend/simple-news
+      dockerfile: Dockerfile
+    env_file:
+      - ./frontend/simple-news/.env.docker
     container_name: frontend
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/ || exit 1"]
+      interval: 10s
+      retries: 3
+      start_period: 30s
+      timeout: 10s
     ports:
       - "3000:3000"
     networks:
@@ -45,19 +67,6 @@ services:
       backend:
         condition: service_healthy
         restart: true
-
-  nginx:
-    image: nginx:latest
-    container_name: nginx
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
-      - frontend
-    networks:
-      - app-network
 
 networks:
   app-network:

@@ -60,7 +60,10 @@ app = FastAPI(
 # Configuración de CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # O especifica ["http://localhost:8000"] si quieres restringir
+    allow_origins=[
+        "http://localhost:3000",
+        "http://backend:8000"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
