@@ -16,7 +16,27 @@
             <option value="culture">Cultura</option>
         </select>
         <label for="image">Imagen:</label>
-        <input type="file" id="image" name="image" @change="onFileChange" accept="image/png, image/jpeg" :required="!newsToEdit" />
+        <div
+          class="drop-area"
+          @dragover.prevent="onDragOver"
+          @dragleave.prevent="onDragLeave"
+          @drop.prevent="onDrop"
+          :class="{ 'drag-over': isDragOver }"
+        >
+          <input
+            type="file"
+            id="image"
+            name="image"
+            @change="onFileChange"
+            accept="image/png, image/jpeg"
+            :required="!newsToEdit"
+            ref="fileInput"
+            style="display: none;"
+          />
+          <p v-if="!imageFile">{{ isDragOver ? 'Suelta la imagen aquí' : 'Haz clic o arrastra una imagen aquí' }}</p>
+          <p v-else>Archivo seleccionado: {{ imageFile.name }}</p>
+          <button type="button" @click="triggerFileInput">Seleccionar archivo</button>
+        </div>
         <button type="submit">Enviar</button>
     </form>
 </template>
@@ -40,6 +60,8 @@ const news = ref<Partial<News>>({
 })
 
 const imageFile = ref<File | null>(null)
+const isDragOver = ref(false)
+const fileInput = ref<HTMLInputElement | null>(null)
 
 const idAuthor = computed(() => {
   if (!auth.token) return null
@@ -66,6 +88,29 @@ function onFileChange(e: Event) {
   const target = e.target as HTMLInputElement
   if (target.files && target.files.length > 0) {
     imageFile.value = target.files[0]
+  }
+}
+
+function triggerFileInput() {
+  fileInput.value?.click()
+}
+
+function onDragOver() {
+  isDragOver.value = true
+}
+function onDragLeave() {
+  isDragOver.value = false
+}
+function onDrop(e: DragEvent) {
+  isDragOver.value = false
+  if (e.dataTransfer?.files && e.dataTransfer.files.length > 0) {
+    imageFile.value = e.dataTransfer.files[0]
+    // Actualiza el input file para mantener la referencia
+    if (fileInput.value) {
+      const dt = new DataTransfer()
+      dt.items.add(imageFile.value)
+      fileInput.value.files = dt.files
+    }
   }
 }
 
@@ -198,6 +243,24 @@ async function handleNewsSubmit() {
 
 #news-form button[type="submit"]:hover {
   background: #a4161a;
+}
+
+.drop-area {
+  border: 2px dashed #aaa;
+  border-radius: 6px;
+  padding: 1.2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  background: #fafafa;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.drop-area.drag-over {
+  border-color: #e63946;
+  background: #ffeaea;
+}
+.drop-area button {
+  margin-top: 0.5rem;
 }
 
 @media (max-width: 1000px) {
