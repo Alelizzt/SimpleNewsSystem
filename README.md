@@ -68,5 +68,3 @@ Consulta los README de cada capa para instrucciones detalladas de instalación, 
 Este proyecto está bajo la licencia Apache 2.0.
 
 ---
-
-**Desarrollado con ❤️ por [Tu Nombre]**
